@@ -12,8 +12,7 @@ const shippori_mincho = Shippori_Mincho({
 
 export const metadata: Metadata = {
   title: 'DokuAGT',
-  description:
-    '駆け出しエンジニアからレベルアップ！何を作ったらいいかわからないを解決します！',
+  description: '',
 }
 
 export default function RootLayout({

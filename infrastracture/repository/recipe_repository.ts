@@ -37,21 +37,51 @@ export class RecipeRepository {
     return response
   }
 
-  async create(recipe: Recipe): Promise<Recipe> {
-    const response: Recipe = recipe
+  async create(args: { recipe: Recipe }): Promise<Recipe> {
+    const { recipe } = args
 
-    return response
+    const document: DocumentData = {
+      id: recipe.id,
+      title: recipe.title,
+      ingredients: recipe.ingredients,
+      procedure: recipe.procedure,
+      favorite: recipe.favorite,
+      serves: recipe.serves,
+      createdAt: recipe.createdAt,
+    }
+
+    const id: string = await this.service.create({ document })
+
+    recipe.id = id
+
+    return recipe
   }
 
-  async update(recipe: Recipe): Promise<Recipe> {
-    const response: Recipe = recipe
+  async update(args: { recipe: Recipe }): Promise<void> {
+    const { recipe } = args
 
-    return response
+    const document: DocumentData = {
+      id: recipe.id,
+      title: recipe.title,
+      ingredients: recipe.ingredients,
+      procedure: recipe.procedure,
+      favorite: recipe.favorite,
+      serves: recipe.serves,
+      createdAt: recipe.createdAt,
+      updatedAt: new Date(),
+    }
+    await this.service.update({ document })
   }
 
-  async delete(id: string): Promise<void> {
-    return
+  async delete(args: { id: string }): Promise<void> {
+    const { id } = args
+
+    await this.service.delete({ id })
   }
 
-  async updateFavorite(id: string): Promise<void> {}
+  async updateForFavorite(args: { id: string }): Promise<void> {
+    const { id } = args
+
+    await this.service.updateForFavorite({ id, favorite: true })
+  }
 }

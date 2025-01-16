@@ -1,10 +1,21 @@
-import { collection, DocumentData, getDocs } from '@firebase/firestore'
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  DocumentData,
+  getDocs,
+  updateDoc,
+} from '@firebase/firestore'
 
 import { db } from '../config'
 
 export class FirebaseRecipeService {
+  /** コレクションパス名 */
+  private path: string = 'recipes'
+
   async findAll(): Promise<DocumentData[]> {
-    const ref = collection(db, 'recipes')
+    const ref = collection(db, this.path)
 
     const snapshot = await getDocs(ref)
 
@@ -15,9 +26,36 @@ export class FirebaseRecipeService {
     return snapshot.docs.map((doc) => doc.data())
   }
 
-  async create(): Promise<void> {}
+  async create(args: { document: DocumentData }): Promise<string> {
+    const { document } = args
+    const ref = collection(db, this.path)
 
-  async update(): Promise<void> {}
+    const doc = await addDoc(ref, document)
 
-  async delete(): Promise<void> {}
+    return doc.id
+  }
+
+  async update(args: { document: DocumentData }): Promise<void> {
+    const { document } = args
+    const ref = doc(db, this.path, document.id)
+
+    await updateDoc(ref, document)
+  }
+
+  async delete(args: { id: string }): Promise<void> {
+    const { id } = args
+    const ref = doc(db, this.path, id)
+
+    await deleteDoc(ref)
+  }
+
+  async updateForFavorite(args: {
+    id: string
+    favorite: boolean
+  }): Promise<void> {
+    const { id, favorite } = args
+    const ref = doc(db, this.path, id)
+
+    await updateDoc(ref, { favorite, updatedAt: new Date() })
+  }
 }
