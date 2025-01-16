@@ -14,15 +14,17 @@ export class Recipe {
   // 作成日
   createdAt: Date
 
-  constructor(
-    id: string,
-    title: string,
-    ingredients: InGredient[],
-    procedure: Procedure[],
-    favorite: boolean,
-    serves: number,
+  constructor(args: {
+    id: string
+    title: string
+    ingredients: InGredient[]
+    procedure: Procedure[]
+    favorite: boolean
+    serves: number
     createdAt: Date
-  ) {
+  }) {
+    const { id, title, ingredients, procedure, favorite, serves, createdAt } =
+      args
     this.id = id
     this.title = title
     this.ingredients = ingredients
