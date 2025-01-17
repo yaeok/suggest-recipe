@@ -19,6 +19,7 @@ const SaveButton = ({ recipe }: SaveButtonProps) => {
 
       setIsSaving(true)
     } catch (error) {
+      console.error(error)
       setIsSaving(false)
     }
   }
