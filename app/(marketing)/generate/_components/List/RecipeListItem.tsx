@@ -1,5 +1,7 @@
 import { Recipe } from '@/domain/Recipe'
 
+import SaveButton from './Button/SaveButton'
+
 type RecipeListItemProps = {
   recipe: Recipe
   index: number
@@ -65,6 +67,10 @@ const RecipeListItem = ({ recipe }: RecipeListItemProps, index: number) => {
             )
           })}
         </ol>
+
+        <div className='w-full flex justify-center mt-4'>
+          <SaveButton recipe={recipe} />
+        </div>
       </div>
     </div>
   )
