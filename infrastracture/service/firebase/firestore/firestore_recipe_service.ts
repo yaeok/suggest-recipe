@@ -32,6 +32,8 @@ export class FirestoreRecipeService {
 
     const doc = await addDoc(ref, document)
 
+    await updateDoc(doc, { id: doc.id })
+
     return doc.id
   }
 
