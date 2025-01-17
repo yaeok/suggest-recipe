@@ -10,7 +10,7 @@ import {
 
 import { db } from '../config'
 
-export class FirebaseRecipeService {
+export class FirestoreRecipeService {
   /** コレクションパス名 */
   private path: string = 'recipes'
 
