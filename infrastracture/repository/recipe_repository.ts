@@ -122,6 +122,49 @@ export class RecipeRepository {
     return response
   }
 
+  async generateRecipeByDiet(args: {
+    diets: Nutrition
+    serves: number
+  }): Promise<Recipe[]> {
+    const response: Recipe[] = []
+
+    const result: GenerateContentResult =
+      await this.geminiService.generateRecipeByDiet(args)
+
+    const text = result.response.text()
+
+    const json = JSON.parse(text)
+
+    json.recipes.forEach((json: any) => {
+      const ingredients: InGredient[] = json.ingredients.map(
+        (ingredient: any) => {
+          return ingredient as InGredient
+        }
+      )
+      const procedure: Procedure[] = json.procedure.map(
+        (procedure: any, index: number) => {
+          return {
+            step: index + 1,
+            description: procedure,
+          } as Procedure
+        }
+      )
+      const recipe: Recipe = new Recipe({
+        id: '',
+        title: json.title,
+        ingredients: ingredients,
+        procedure: procedure,
+        favorite: false,
+        serves: args.serves,
+        nutrition: json.nutrition as Nutrition,
+        createdAt: new Date(),
+      })
+      response.push(recipe)
+    })
+
+    return response
+  }
+
   async create(args: { recipe: Recipe }): Promise<Recipe> {
     const { recipe } = args
 

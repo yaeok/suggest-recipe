@@ -3,6 +3,8 @@ import './globals.css'
 
 import { Shippori_Mincho } from 'next/font/google'
 
+import Header from '@/components/Header'
+
 const shippori_mincho = Shippori_Mincho({
   subsets: ['latin'],
   weight: '400',
@@ -11,7 +13,7 @@ const shippori_mincho = Shippori_Mincho({
 })
 
 export const metadata: Metadata = {
-  title: 'DokuAGT',
+  title: 'レシピジェネレータ',
   description: '',
 }
 
@@ -23,6 +25,7 @@ export default function RootLayout({
   return (
     <html lang='ja'>
       <body className={`${shippori_mincho.className} antialiased`}>
+        <Header />
         {children}
       </body>
     </html>
