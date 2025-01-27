@@ -6,17 +6,18 @@ import { TabType } from '@/constants/Tab'
 import { Recipe } from '@/domain/Recipe'
 
 import ContentRecipeForm from './_components/Form/ContentRecipeForm'
+import DietRecipeForm from './_components/Form/DietRecipeForm'
 import IngredientRecipeForm from './_components/Form/IngredientRecipeForm'
 import RecipeList from './_components/List/RecipeList'
 import SelectTab from './_components/SelectTab'
 
 const Page = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([])
-  const [selectTab, setSelectTab] = useState<TabType>(TabType.CONTENTS)
+  const [selectTab, setSelectTab] = useState<TabType>(TabType.INGREDIENTS)
   const [loading, setLoading] = useState<boolean>(false)
   if (loading) {
     return (
-      <div className='w-full min-h-screen flex justify-center items-center animate-pulse'>
+      <div className='absolute w-full min-h-screen flex justify-center items-center animate-pulse z-20'>
         <div className='w-full flex flex-col items-center gap-4'>
           <h2 className='text-3xl font-extrabold'>生成中...</h2>
         </div>
@@ -24,7 +25,7 @@ const Page = () => {
     )
   } else {
     return (
-      <div className='w-full min-h-screen max-w-screen-md mx-auto py-24 space-y-8'>
+      <div className='w-full max-w-screen-md mx-auto py-12 space-y-8'>
         <SelectTab selectTab={selectTab} setSelectTab={setSelectTab} />
         {(() => {
           if (selectTab === TabType.CONTENTS) {
@@ -40,6 +41,10 @@ const Page = () => {
                 setRecipes={setRecipes}
                 setLoading={setLoading}
               />
+            )
+          } else if (selectTab === TabType.DIET) {
+            return (
+              <DietRecipeForm setRecipes={setRecipes} setLoading={setLoading} />
             )
           }
         })()}

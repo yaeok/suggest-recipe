@@ -1,3 +1,5 @@
+import { Nutrition } from '@/domain/Recipe'
+
 export const createPromptByContent = (args: {
   content: string
   serves: number
@@ -104,6 +106,109 @@ export const createPromptByIngredients = (args: {
       # 命令
       ${ingredients.join('、')}を使ったレシピを3つ考えてください。
       ${serves}人前の材料と分量をそれぞれ教えてください。
+      作り方の工程も教えてください。
+
+      # 制約
+      - 工程には番号はつけないでください。
+      - 材料と工程は5つ以上にしてください。
+      {
+        "recipes" : [
+          {
+            "title": "レシピ1",
+            "ingredients": [
+              {
+                "name": "材料1",
+                "quantity": "分量1"
+              },
+              {
+                "name": "材料2",
+                "quantity": "分量2"
+              }
+            ],
+            "procedure": [
+              "工程1",
+              "工程2"
+            ],
+            "nutrition": {
+              "calorie": 100,
+              "protein": 10,
+              "fat": 5,
+              "carbohydrate": 20
+              "salt": 1
+            }
+          },
+          {
+            "title": "レシピ2",
+            "ingredients": [
+              {
+                "name": "材料1",
+                "quantity": "分量1"
+              },
+              {
+                "name": "材料2",
+                "quantity": "分量2"
+              }
+            ],
+            "procedure": [
+              "工程1",
+              "工程2"
+            ],
+            "nutrition": {
+              "calorie": 100,
+              "protein": 10,
+              "fat": 5,
+              "carbohydrate": 20
+              "salt": 1
+            }
+          },
+          {
+            "title": "レシピ3",
+            "ingredients": [
+              {
+                "name": "材料1",
+                "quantity": "分量1"
+              },
+              {
+                "name": "材料2",
+                "quantity": "分量2"
+              }
+            ],
+            "procedure": [
+              "工程1",
+              "工程2"
+            ],
+            "nutrition": {
+              "calorie": 100,
+              "protein": 10,
+              "fat": 5,
+              "carbohydrate": 20
+              "salt": 1
+            }
+          }
+        ]
+      }
+    `
+
+  return prompt
+}
+
+export const createPromptByDiet = (args: {
+  diets: Nutrition
+  serves: number
+}): string => {
+  const { diets, serves } = args
+
+  const prompt = `
+      # 命令
+      以下の栄養価を持つレシピを3つ考えてください。
+      ${diets.calorie}
+      ${diets.protein}
+      ${diets.fat}
+      ${diets.carbohydrate}
+      ${diets.salt}
+      
+      ${serves}人前の材料と分量をそれぞれ教えてください。
+      栄養の量は忠実に守ってください。
       作り方の工程も教えてください。
 
       # 制約

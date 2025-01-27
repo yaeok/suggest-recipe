@@ -62,7 +62,9 @@ const IngredientRecipeForm = ({
     >
       <section className='w-full flex flex-col items-center gap-4'>
         <section className='space-y-2 w-full'>
-          <label htmlFor='content'>使いたい材料を入力してください</label>
+          <label htmlFor='content' className='text-sm'>
+            使いたい材料を入力してください
+          </label>
           {fields.map((field, index) => {
             return (
               <div key={field.id} className='space-y-2'>
@@ -106,7 +108,9 @@ const IngredientRecipeForm = ({
           追加
         </button>
         <section className='space-y-2 w-full'>
-          <label htmlFor='serves'>何人前</label>
+          <label htmlFor='serves' className='text-sm'>
+            何人前
+          </label>
           <input
             type='number'
             min={1}

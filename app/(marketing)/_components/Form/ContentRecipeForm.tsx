@@ -48,7 +48,9 @@ const ContentRecipeForm = ({
     >
       <section className='w-full flex flex-col items-center gap-4'>
         <section className='space-y-2 w-full'>
-          <label htmlFor='content'>生成したいレシピの内容</label>
+          <label htmlFor='content' className='text-sm'>
+            生成したいレシピの内容
+          </label>
           <textarea
             {...register('content', {
               required: '生成したいレシピの内容を入力してください',
@@ -66,7 +68,9 @@ const ContentRecipeForm = ({
           )}
         </section>
         <section className='space-y-2 w-full'>
-          <label htmlFor='serves'>何人前</label>
+          <label htmlFor='serves' className='text-sm'>
+            何人前
+          </label>
           <input
             type='number'
             min={1}

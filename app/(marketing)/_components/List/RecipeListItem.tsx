@@ -9,8 +9,8 @@ type RecipeListItemProps = {
 
 const RecipeListItem = ({ recipe }: RecipeListItemProps, index: number) => {
   return (
-    <div key={index} className='w-full max-w-screen-md mx-auto py-16'>
-      <div className='w-full bg-red-50 rounded-md p-4 flex flex-col items-center gap-4'>
+    <div key={index} className='w-full max-w-screen-md mx-auto py-8'>
+      <div className='w-full bg-red-50 rounded-md py-4 px-8 flex flex-col items-center gap-4'>
         <h2 className='p-4 text-2xl font-semibold text-center'>
           {recipe.title}
         </h2>
