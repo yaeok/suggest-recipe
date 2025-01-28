@@ -103,7 +103,9 @@ const IngredientRecipeForm = ({
             })
           }
           disabled={fields.length >= 5}
-          className='px-4 py-2 text-sm font-semibold bg-red-300 rounded-full disabled:opacity-50'
+          className='px-4 py-2 text-sm bg-red-300 rounded-full shadow-md
+          disabled:opacity-50
+          hover:shadow-none hover:bg-red-400 hover:translate-y-1 duration-300'
         >
           追加
         </button>
