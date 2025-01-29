@@ -1,6 +1,9 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+
+import { SignInUseCase } from '@/usecase/SignInUseCase/SignInUseCase'
 
 type SignInFormType = {
   email: string
@@ -19,8 +22,22 @@ const Page = () => {
     },
   })
 
-  const onSubmit = handleSubmit((data: SignInFormType) => {
-    console.log(data)
+  const router = useRouter()
+
+  const onSubmit = handleSubmit(async (data: SignInFormType) => {
+    try {
+      const { email, password } = data
+
+      const usecase = new SignInUseCase()
+
+      const response = await usecase.execute({ email, password })
+
+      if (response.result) {
+        router.push('/')
+      }
+    } catch (error: any) {
+      console.error(error)
+    }
   })
   return (
     <div className='max-w-screen-sm mx-auto py-16 px-8'>

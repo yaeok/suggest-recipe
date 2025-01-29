@@ -26,7 +26,6 @@ export default function RootLayout({
   return (
     <html lang='ja'>
       <body className={`${shippori_mincho.className} antialiased`}>
-        <Header />
         {children}
       </body>
     </html>

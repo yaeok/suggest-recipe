@@ -9,7 +9,7 @@ import React, {
   useState,
 } from 'react'
 
-import Loading from '@/components/loading'
+import Loading from '@/components/Loading'
 import { User } from '@/domain/User'
 import { auth } from '@/infrastracture/service/firebase/config'
 import { FirestoreUserService } from '@/infrastracture/service/firebase/firestore/firestore_user_service'
