@@ -1,27 +1,30 @@
-export class NutritionDTO {
+export class Nutrition {
+  // id
   id: string
-  recipeId: string
-  protein: number
-  fat: number
+  // カロリー
   calorie: number
+  // タンパク質
+  protein: number
+  // 脂質
+  fat: number
+  // 炭水化物
   carbohydrate: number
+  // 塩分
   salt: number
 
   constructor(args: {
     id: string
-    recipeId: string
+    calorie: number
     protein: number
     fat: number
-    calorie: number
     carbohydrate: number
     salt: number
   }) {
-    const { id, recipeId, protein, fat, calorie, carbohydrate, salt } = args
+    const { id, calorie, protein, fat, carbohydrate, salt } = args
     this.id = id
-    this.recipeId = recipeId
+    this.calorie = calorie
     this.protein = protein
     this.fat = fat
-    this.calorie = calorie
     this.carbohydrate = carbohydrate
     this.salt = salt
   }

@@ -1,20 +1,20 @@
-import { Nutrition } from '@/domain/Recipe'
+import { Nutrition } from '@/domain/Nutrition'
 
-import { RecipeDTO } from '../data/RecipeDTO'
+import { GenerateOutput } from '../data/gemini/GenerateOutput'
 
 export interface GenerateRepository {
   generateRecipeByContent(args: {
     content: string
     serves: number
-  }): Promise<RecipeDTO[]>
+  }): Promise<GenerateOutput[]>
 
   generateRecipeByMaterial(args: {
     materials: string[]
     serves: number
-  }): Promise<RecipeDTO[]>
+  }): Promise<GenerateOutput[]>
 
   generateRecipeByDiet(args: {
     diets: Nutrition
     serves: number
-  }): Promise<RecipeDTO[]>
+  }): Promise<GenerateOutput[]>
 }

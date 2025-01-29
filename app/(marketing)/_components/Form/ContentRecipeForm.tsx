@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
+import SignUpModal from '@/components/Modal/SignUpModal'
 import { Recipe } from '@/domain/Recipe'
-import { GeminiRecipeService } from '@/infrastracture/service/firebase/gemini/gemini_recipe_service'
+import { GenerateRecipeByContentModeUseCase } from '@/usecase/GenerateRecipeByContentModeUseCase/GenerateRecipeByContentModeUseCase'
 
 import GenerateButton from './Button/GenerateButton'
 
@@ -32,15 +34,20 @@ const ContentRecipeForm = ({
   })
 
   const onSubmit = handleSubmit(async (data: ContentRecipeFormType) => {
+    const { content, serves } = data
     setLoading(true)
-    const service = new GeminiRecipeService()
+    const usecase = new GenerateRecipeByContentModeUseCase()
 
-    const response: Recipe[] = await service.generateRecipeByContent(data)
+    const response = await usecase.execute({
+      content: content,
+      serves: serves,
+    })
 
-    setRecipes(response)
+    setRecipes(response.recipes)
     reset()
     setLoading(false)
   })
+
   return (
     <form
       onSubmit={onSubmit}

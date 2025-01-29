@@ -1,3 +1,7 @@
+import { Material } from './Material'
+import { Nutrition } from './Nutrition'
+import { Process } from './Process'
+
 export class Recipe {
   // レシピID
   id: string
@@ -45,22 +49,4 @@ export class Recipe {
     this.nutrition = nutrition
     this.createdAt = createdAt
   }
-}
-
-export type Material = {
-  name: string
-  quantity: string
-}
-
-export type Process = {
-  step: number
-  description: string
-}
-
-export type Nutrition = {
-  calorie: number
-  protein: number
-  fat: number
-  carbohydrate: number
-  salt: number
 }

@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app'
+import { getAuth } from 'firebase/auth'
 
 import { getFirestore } from '@firebase/firestore'
 
@@ -13,5 +14,6 @@ export const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 export const db = getFirestore(app)
+export const auth = getAuth(app)
 
 export const geminiAPI = process.env.NEXT_PUBLIC_GEMINI_API_KEY

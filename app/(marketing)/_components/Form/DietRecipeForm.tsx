@@ -1,7 +1,8 @@
 import { useForm } from 'react-hook-form'
 
+import { Nutrition } from '@/domain/Nutrition'
 import { Recipe } from '@/domain/Recipe'
-import { RecipeRepository } from '@/infrastracture/repository/impl_recipe_repository'
+import { GenerateRecipeByDietModeUseCase } from '@/usecase/GenerateRecipeByDietModeUseCase/GenerateRecipeByDietModeUseCase'
 
 import GenerateButton from './Button/GenerateButton'
 
@@ -35,21 +36,26 @@ const DietRecipeForm = ({ setRecipes, setLoading }: DietRecipeFormProps) => {
   })
 
   const onSubmit = handleSubmit(async (data: DietRecipeFormType) => {
+    const { calorie, protein, fat, carbohydrate, serves } = data
     setLoading(true)
-    const repository = new RecipeRepository()
 
-    const response: Recipe[] = await repository.generateRecipeByDiet({
-      diets: {
-        calorie: data.calorie,
-        protein: data.protein,
-        fat: data.fat,
-        carbohydrate: data.carbohydrate,
-        salt: 0,
-      },
-      serves: data.serves,
+    const usecase = new GenerateRecipeByDietModeUseCase()
+
+    const nutrition = new Nutrition({
+      id: '',
+      calorie: calorie,
+      protein: protein,
+      fat: fat,
+      carbohydrate: carbohydrate,
+      salt: 0,
     })
 
-    setRecipes(response)
+    const response = await usecase.execute({
+      nutrition: nutrition,
+      serves: serves,
+    })
+
+    setRecipes(response.recipes)
     reset()
     setLoading(false)
   })

@@ -1,4 +1,4 @@
-import { Nutrition } from '@/domain/Recipe'
+import { Nutrition } from '@/domain/Nutrition'
 
 export const createPromptByContent = (args: {
   content: string
