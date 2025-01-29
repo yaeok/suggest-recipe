@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { Recipe } from '@/domain/Recipe'
-import { RecipeRepository } from '@/infrastracture/repository/recipe_repository'
+import { CreateRecipeUseCase } from '@/usecase/CreateRecipeUseCase/CreateRecipeUseCase'
 
 type SaveButtonProps = {
   recipe: Recipe
@@ -13,9 +13,13 @@ const SaveButton = ({ recipe }: SaveButtonProps) => {
     setIsSaving(true)
 
     try {
-      const repository = new RecipeRepository()
+      const usecase = new CreateRecipeUseCase()
 
-      await repository.create({ recipe })
+      const response = await usecase.execute({ recipe })
+
+      if (response.recipe) {
+        alert('レシピを登録しました')
+      }
 
       setIsSaving(true)
     } catch (error) {
@@ -28,7 +32,9 @@ const SaveButton = ({ recipe }: SaveButtonProps) => {
       type='button'
       onClick={handleSave}
       disabled={isSaving}
-      className='px-4 py-2 text-lg font-semibold bg-green-400 rounded-full disabled:opacity-50'
+      className='px-4 py-2 bg-green-400 rounded-full shadow-md 
+      disabled:opacity-50 disabled:cursor-not-allowed
+      hover:shadow-none hover:bg-green-500 hover:translate-y-1 duration-300'
     >
       登録する
     </button>

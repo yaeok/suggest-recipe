@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 
 import { Recipe } from '@/domain/Recipe'
-import { RecipeRepository } from '@/infrastracture/repository/recipe_repository'
+import { GenerateRecipeByContentModeUseCase } from '@/usecase/GenerateRecipeByContentModeUseCase/GenerateRecipeByContentModeUseCase'
 
 import GenerateButton from './Button/GenerateButton'
 
@@ -32,15 +32,20 @@ const ContentRecipeForm = ({
   })
 
   const onSubmit = handleSubmit(async (data: ContentRecipeFormType) => {
+    const { content, serves } = data
     setLoading(true)
-    const repository = new RecipeRepository()
+    const usecase = new GenerateRecipeByContentModeUseCase()
 
-    const response: Recipe[] = await repository.generateRecipeByContent(data)
+    const response = await usecase.execute({
+      content: content,
+      serves: serves,
+    })
 
-    setRecipes(response)
+    setRecipes(response.recipes)
     reset()
     setLoading(false)
   })
+
   return (
     <form
       onSubmit={onSubmit}

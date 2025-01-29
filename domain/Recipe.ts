@@ -1,12 +1,16 @@
+import { Material } from './Material'
+import { Nutrition } from './Nutrition'
+import { Process } from './Process'
+
 export class Recipe {
   // レシピID
   id: string
   // 料理名
   title: string
   // 材料：分量
-  ingredients: InGredient[]
+  materials: Material[]
   // 作り方
-  procedure: Procedure[]
+  process: Process[]
   // お気に入り
   favorite: boolean
   // 人数
@@ -19,8 +23,8 @@ export class Recipe {
   constructor(args: {
     id: string
     title: string
-    ingredients: InGredient[]
-    procedure: Procedure[]
+    materials: Material[]
+    process: Process[]
     favorite: boolean
     serves: number
     nutrition: Nutrition
@@ -29,8 +33,8 @@ export class Recipe {
     const {
       id,
       title,
-      ingredients,
-      procedure,
+      materials,
+      process,
       favorite,
       serves,
       nutrition,
@@ -38,29 +42,11 @@ export class Recipe {
     } = args
     this.id = id
     this.title = title
-    this.ingredients = ingredients
-    this.procedure = procedure
+    this.materials = materials
+    this.process = process
     this.favorite = favorite
     this.serves = serves
     this.nutrition = nutrition
     this.createdAt = createdAt
   }
-}
-
-export type InGredient = {
-  name: string
-  quantity: string
-}
-
-export type Procedure = {
-  step: number
-  description: string
-}
-
-export type Nutrition = {
-  calorie: number
-  protein: number
-  fat: number
-  carbohydrate: number
-  salt: number
 }
