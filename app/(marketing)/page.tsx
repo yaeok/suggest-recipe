@@ -25,7 +25,7 @@ const Page = () => {
     )
   } else {
     return (
-      <div className='w-full max-w-screen-md mx-auto py-12 space-y-8'>
+      <div className='w-full max-w-screen-md mx-auto px-8 py-12 space-y-8'>
         <SelectTab selectTab={selectTab} setSelectTab={setSelectTab} />
         {(() => {
           if (selectTab === TabType.CONTENTS) {

@@ -4,6 +4,7 @@ import './globals.css'
 import { Shippori_Mincho } from 'next/font/google'
 
 import Header from '@/components/Header'
+import { CurrentUserProvider } from '@/providers/CurrentUserProvider'
 
 const shippori_mincho = Shippori_Mincho({
   subsets: ['latin'],
