@@ -1,7 +1,5 @@
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import SignUpModal from '@/components/Modal/SignUpModal'
 import { Recipe } from '@/domain/Recipe'
 import { GenerateRecipeByContentModeUseCase } from '@/usecase/GenerateRecipeByContentModeUseCase/GenerateRecipeByContentModeUseCase'
 
