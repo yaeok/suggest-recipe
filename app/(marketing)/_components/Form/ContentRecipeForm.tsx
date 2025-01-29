@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 
 import { Recipe } from '@/domain/Recipe'
-import { RecipeRepository } from '@/infrastracture/repository/recipe_repository'
+import { GeminiRecipeService } from '@/infrastracture/service/firebase/gemini/gemini_recipe_service'
 
 import GenerateButton from './Button/GenerateButton'
 
@@ -33,9 +33,9 @@ const ContentRecipeForm = ({
 
   const onSubmit = handleSubmit(async (data: ContentRecipeFormType) => {
     setLoading(true)
-    const repository = new RecipeRepository()
+    const service = new GeminiRecipeService()
 
-    const response: Recipe[] = await repository.generateRecipeByContent(data)
+    const response: Recipe[] = await service.generateRecipeByContent(data)
 
     setRecipes(response)
     reset()

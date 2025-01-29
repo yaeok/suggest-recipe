@@ -1,9 +1,11 @@
 import {
   createPromptByContent,
   createPromptByDiet,
-  createPromptByIngredients,
+  createPromptByMaterial,
 } from '@/constants/Prompt'
 import { Nutrition } from '@/domain/Recipe'
+import { RecipeDTO } from '@/infrastracture/data/RecipeDTO'
+import { GenerateRepository } from '@/infrastracture/repository/generate_repository'
 import {
   GenerateContentResult,
   GoogleGenerativeAI,
@@ -11,7 +13,7 @@ import {
 
 import { geminiAPI } from '../config'
 
-export class GeminiRecipeService {
+export class GeminiRecipeService implements GenerateRepository {
   private genAI: GoogleGenerativeAI
 
   constructor() {
@@ -20,57 +22,105 @@ export class GeminiRecipeService {
   async generateRecipeByContent(args: {
     content: string
     serves: number
-  }): Promise<GenerateContentResult> {
+  }): Promise<RecipeDTO[]> {
     const model = this.genAI.getGenerativeModel({
       model: 'gemini-1.5-flash',
       generationConfig: { responseMimeType: 'application/json' },
     })
+
+    const result: RecipeDTO[] = []
 
     // プロンプトを生成
     const prompt = createPromptByContent(args)
 
     // レシピを生成
-    const response = await model.generateContent(prompt)
+    const response: GenerateContentResult = await model.generateContent(prompt)
 
-    // 結果を返却
-    return response
+    const text = response.response.text()
+
+    const json = JSON.parse(text)
+
+    json.recipes.forEach((json: any) => {
+      const recipe: RecipeDTO = new RecipeDTO({
+        id: '',
+        title: json.title,
+        favorite: false,
+        serves: args.serves,
+        createdAt: new Date(),
+      })
+      result.push(recipe)
+    })
+
+    return result
   }
 
-  async generateRecipeByIngredients(args: {
-    ingredients: string[]
+  async generateRecipeByMaterial(args: {
+    materials: string[]
     serves: number
-  }): Promise<GenerateContentResult> {
+  }): Promise<RecipeDTO[]> {
     const model = this.genAI.getGenerativeModel({
       model: 'gemini-1.5-flash',
       generationConfig: { responseMimeType: 'application/json' },
     })
 
+    const result: RecipeDTO[] = []
+
     // プロンプトを生成
-    const prompt = createPromptByIngredients(args)
+    const prompt = createPromptByMaterial(args)
 
     // レシピを生成
-    const response = await model.generateContent(prompt)
+    const response: GenerateContentResult = await model.generateContent(prompt)
 
-    // 結果を返却
-    return response
+    const text = response.response.text()
+
+    const json = JSON.parse(text)
+
+    json.recipes.forEach((json: any) => {
+      const recipe: RecipeDTO = new RecipeDTO({
+        id: '',
+        title: json.title,
+        favorite: false,
+        serves: args.serves,
+        createdAt: new Date(),
+      })
+      result.push(recipe)
+    })
+
+    return result
   }
 
   async generateRecipeByDiet(args: {
     diets: Nutrition
     serves: number
-  }): Promise<GenerateContentResult> {
+  }): Promise<RecipeDTO[]> {
     const model = this.genAI.getGenerativeModel({
       model: 'gemini-1.5-flash',
       generationConfig: { responseMimeType: 'application/json' },
     })
 
+    const result: RecipeDTO[] = []
+
     // プロンプトを生成
     const prompt = createPromptByDiet(args)
 
     // レシピを生成
-    const response = await model.generateContent(prompt)
+    const response: GenerateContentResult = await model.generateContent(prompt)
 
-    // 結果を返却
-    return response
+    const text = response.response.text()
+
+    const json = JSON.parse(text)
+
+    json.recipes.forEach((json: any) => {
+      const recipe: RecipeDTO = new RecipeDTO({
+        id: '',
+        title: json.title,
+        favorite: false,
+        serves: args.serves,
+        createdAt: new Date(),
+      })
+      result.push(recipe)
+    })
+
+    return result
   }
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { Recipe } from '@/domain/Recipe'
-import { RecipeRepository } from '@/infrastracture/repository/recipe_repository'
+import { RecipeRepository } from '@/infrastracture/repository/impl_recipe_repository'
 
 type SaveButtonProps = {
   recipe: Recipe

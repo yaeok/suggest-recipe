@@ -3,55 +3,55 @@ import { IconContext } from 'react-icons'
 import { RiCloseCircleLine } from 'react-icons/ri'
 
 import { Recipe } from '@/domain/Recipe'
-import { RecipeRepository } from '@/infrastracture/repository/recipe_repository'
+import { GenerateRecipeByMaterialModeUseCase } from '@/usecase/GenerateRecipeByMaterialModeUseCase/GenerateRecipeByMaterialModeUseCase'
 
 import GenerateButton from './Button/GenerateButton'
 
-type IngredientRecipeFormProps = {
+type MaterialRecipeFormProps = {
   setRecipes: (recipes: Recipe[]) => void
   setLoading: (loading: boolean) => void
 }
 
-type IngredientRecipeFormType = {
-  ingredients: { name: string }[]
+type MaterialRecipeFormType = {
+  materials: { name: string }[]
   serves: number
 }
 
-const IngredientRecipeForm = ({
+const MaterialRecipeForm = ({
   setRecipes,
   setLoading,
-}: IngredientRecipeFormProps) => {
+}: MaterialRecipeFormProps) => {
   const {
     register,
     handleSubmit,
     reset,
     control,
     formState: { errors },
-  } = useForm<IngredientRecipeFormType>({
+  } = useForm<MaterialRecipeFormType>({
     defaultValues: {
-      ingredients: [{ name: '' }],
+      materials: [{ name: '' }],
       serves: 1,
     },
   })
 
-  const { fields, append, remove } = useFieldArray<IngredientRecipeFormType>({
+  const { fields, append, remove } = useFieldArray<MaterialRecipeFormType>({
     control: control,
-    name: 'ingredients',
+    name: 'materials',
   })
 
-  const onSubmit = handleSubmit(async (data: IngredientRecipeFormType) => {
-    const { ingredients, serves } = data
+  const onSubmit = handleSubmit(async (data: MaterialRecipeFormType) => {
+    const { materials, serves } = data
     setLoading(true)
-    const repository = new RecipeRepository()
+    const usecase = new GenerateRecipeByMaterialModeUseCase()
 
-    const lstIngredients = ingredients.map((ingredient) => ingredient.name)
+    const lstMaterials = materials.map((material) => material.name)
 
-    const response: Recipe[] = await repository.generateRecipeByIngredients({
-      ingredients: lstIngredients,
+    const response = await usecase.execute({
+      materials: lstMaterials,
       serves: serves,
     })
 
-    setRecipes(response)
+    setRecipes(response.recipes)
     reset()
     setLoading(false)
   })
@@ -70,7 +70,7 @@ const IngredientRecipeForm = ({
               <div key={field.id} className='space-y-2'>
                 <div className='flex flex-row gap-2 items-center'>
                   <input
-                    {...register(`ingredients.${index}.name`, {
+                    {...register(`materials.${index}.name`, {
                       required: '材料を入力してください',
                     })}
                     className='flex-1 border-2 border-gray-300 rounded-md p-2'
@@ -86,9 +86,9 @@ const IngredientRecipeForm = ({
                     </IconContext.Provider>
                   </button>
                 </div>
-                {errors.ingredients && errors.ingredients[index]?.name && (
+                {errors.materials && errors.materials[index]?.name && (
                   <span className='pl-2 text-red-500 text-xs'>
-                    {errors.ingredients[index]?.name.message}
+                    {errors.materials[index]?.name.message}
                   </span>
                 )}
               </div>
@@ -145,4 +145,4 @@ const IngredientRecipeForm = ({
   )
 }
 
-export default IngredientRecipeForm
+export default MaterialRecipeForm

@@ -20,11 +20,11 @@ const RecipeListItem = ({ recipe }: RecipeListItemProps, index: number) => {
               材料<span>({recipe.serves}人前)</span>
             </h3>
             <ul className='w-full space-y-2'>
-              {recipe.ingredients.map((ingredient, index) => {
+              {recipe.materials.map((material, index) => {
                 return (
                   <li key={index}>
-                    <span>{ingredient.name}</span>
-                    <span>{ingredient.quantity}</span>
+                    <span>{material.name}</span>
+                    <span>{material.quantity}</span>
                   </li>
                 )
               })}
@@ -55,11 +55,11 @@ const RecipeListItem = ({ recipe }: RecipeListItemProps, index: number) => {
         <h3 className='text-xl font-semibold'>作り方</h3>
 
         <ol className='w-full space-y-2'>
-          {recipe.procedure.map((procedure, index) => {
+          {recipe.process.map((process, index) => {
             return (
               <li key={index}>
-                <span>{procedure.step}. </span>
-                <span>{procedure.description}</span>
+                <span>{process.step}. </span>
+                <span>{process.description}</span>
               </li>
             )
           })}

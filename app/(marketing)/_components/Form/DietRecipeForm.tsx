@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 
 import { Recipe } from '@/domain/Recipe'
-import { RecipeRepository } from '@/infrastracture/repository/recipe_repository'
+import { RecipeRepository } from '@/infrastracture/repository/impl_recipe_repository'
 
 import GenerateButton from './Button/GenerateButton'
 
