@@ -5,9 +5,15 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth'
 
+import { SystemErrorException } from '@/infrastracture/exception/SystemErrorException'
+import { UserNotFoundException } from '@/infrastracture/exception/UserNotFoundException'
 import { AuthRepository } from '@/infrastracture/repository/auth_repository'
 
 import { auth } from '../config'
+import {
+  FirebaseAuthException,
+  isFirebaseError,
+} from '../exception/FirebaseAuthException'
 
 export class AuthenticationService implements AuthRepository {
   async signIn(args: { email: string; password: string }): Promise<void> {
@@ -15,8 +21,13 @@ export class AuthenticationService implements AuthRepository {
       const { email, password } = args
 
       await signInWithEmailAndPassword(auth, email, password)
-    } catch (error) {
-      throw new Error('Failed to sign in')
+    } catch (error: any) {
+      if (isFirebaseError(error)) {
+        const result = this.handleFirebaseAuthError(error)
+        throw new FirebaseAuthException(result.message, result.code)
+      } else {
+        throw new SystemErrorException()
+      }
     }
   }
 
@@ -27,16 +38,26 @@ export class AuthenticationService implements AuthRepository {
       const user = await createUserWithEmailAndPassword(auth, email, password)
 
       return user.user.uid
-    } catch (error) {
-      throw new Error('Failed to sign up')
+    } catch (error: any) {
+      if (isFirebaseError(error)) {
+        const result = this.handleFirebaseAuthError(error)
+        throw new FirebaseAuthException(result.message, result.code)
+      } else {
+        throw new SystemErrorException()
+      }
     }
   }
 
   async signOut(): Promise<void> {
     try {
       await auth.signOut()
-    } catch (error) {
-      throw new Error('Failed to sign out')
+    } catch (error: any) {
+      if (isFirebaseError(error)) {
+        const result = this.handleFirebaseAuthError(error)
+        throw new FirebaseAuthException(result.message, result.code)
+      } else {
+        throw new SystemErrorException()
+      }
     }
   }
   async sendEmailVerification(): Promise<boolean> {
@@ -44,12 +65,17 @@ export class AuthenticationService implements AuthRepository {
       const currentUser = auth.currentUser
 
       if (!currentUser) {
-        throw new Error('No user signed in')
+        throw new UserNotFoundException()
       }
       await sendEmailVerification(currentUser)
       return true
-    } catch (error) {
-      throw new Error('Failed to send email verification')
+    } catch (error: any) {
+      if (isFirebaseError(error)) {
+        const result = this.handleFirebaseAuthError(error)
+        throw new FirebaseAuthException(result.message, result.code)
+      } else {
+        throw new SystemErrorException()
+      }
     }
   }
 
@@ -59,8 +85,13 @@ export class AuthenticationService implements AuthRepository {
 
       await sendPasswordResetEmail(auth, email)
       return true
-    } catch (error) {
-      throw new Error('Failed to send password reset email')
+    } catch (error: any) {
+      if (isFirebaseError(error)) {
+        const result = this.handleFirebaseAuthError(error)
+        throw new FirebaseAuthException(result.message, result.code)
+      } else {
+        throw new SystemErrorException()
+      }
     }
   }
   async resendEmailVerification(): Promise<boolean> {
@@ -68,12 +99,17 @@ export class AuthenticationService implements AuthRepository {
       const currentUser = auth.currentUser
 
       if (!currentUser) {
-        throw new Error('No user signed in')
+        throw new UserNotFoundException()
       }
       await sendEmailVerification(currentUser)
       return true
-    } catch (error) {
-      throw new Error('Failed to resend email verification')
+    } catch (error: any) {
+      if (isFirebaseError(error)) {
+        const result = this.handleFirebaseAuthError(error)
+        throw new FirebaseAuthException(result.message, result.code)
+      } else {
+        throw new SystemErrorException()
+      }
     }
   }
 
@@ -82,11 +118,54 @@ export class AuthenticationService implements AuthRepository {
       const currentUser = auth.currentUser
 
       if (!currentUser) {
-        throw new Error('No user signed in')
+        throw new UserNotFoundException()
       }
       return currentUser.emailVerified
-    } catch (error) {
-      throw new Error('Failed to check email verification')
+    } catch (error: any) {
+      if (isFirebaseError(error)) {
+        const result = this.handleFirebaseAuthError(error)
+        throw new FirebaseAuthException(result.message, result.code)
+      } else {
+        throw new SystemErrorException()
+      }
+    }
+  }
+
+  /**
+   * Firebaseのエラーハンドリングを行う
+   * @param error エラーオブジェクト
+   */
+  private handleFirebaseAuthError(error: any): {
+    message: string
+    code: string
+  } {
+    let message
+    switch (error.code) {
+      case 'auth/user-not-found':
+        message = '認証情報が見つかりません'
+        break
+      case 'auth/wrong-password':
+        message = 'パスワードが違います'
+        break
+      case 'auth/user-disabled':
+        message = '無効なアカウントです'
+        break
+      case 'auth/too-many-requests':
+        message = 'リクエストが多すぎます。後ほど再試行してください'
+        break
+      case 'auth/invalid-email':
+        message = '無効なメールアドレスです'
+        break
+      case 'auth/email-already-in-use':
+        message = '既に登録されたメールアドレスです'
+        break
+      default:
+        message = 'ログインに失敗しました'
+        break
+    }
+    return {
+      message,
+      code: error.code,
     }
   }
 }

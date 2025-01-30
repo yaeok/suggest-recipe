@@ -27,7 +27,6 @@ const MaterialRecipeForm = ({
   const {
     register,
     handleSubmit,
-    reset,
     control,
     formState: { errors },
   } = useForm<MaterialRecipeFormType>({
@@ -66,7 +65,6 @@ const MaterialRecipeForm = ({
     })
 
     setRecipes(response.recipes)
-    reset()
     setLoading(false)
   })
   return (

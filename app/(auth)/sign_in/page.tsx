@@ -1,8 +1,13 @@
 'use client'
 
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
+import ErrorMessageModal from '@/components/Modal/ErrorMessageModal'
+import { SystemErrorException } from '@/infrastracture/exception/SystemErrorException'
+import { FirebaseAuthException } from '@/infrastracture/service/firebase/exception/FirebaseAuthException'
 import { SignInUseCase } from '@/usecase/SignInUseCase/SignInUseCase'
 
 type SignInFormType = {
@@ -24,6 +29,12 @@ const Page = () => {
 
   const router = useRouter()
 
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [errorMessage, setErrorMessage] = useState<string>('')
+
+  const openErrorModal = () => setIsOpen(true)
+  const closeErrorModal = () => setIsOpen(false)
+
   const onSubmit = handleSubmit(async (data: SignInFormType) => {
     try {
       const { email, password } = data
@@ -35,8 +46,14 @@ const Page = () => {
       if (response.result) {
         router.push('/')
       }
-    } catch (error: any) {
-      console.error(error)
+    } catch (error) {
+      if (error instanceof FirebaseAuthException) {
+        setErrorMessage(error.message)
+        openErrorModal()
+      } else if (error instanceof SystemErrorException) {
+        setErrorMessage(error.message)
+        openErrorModal()
+      }
     }
   })
   return (
@@ -97,13 +114,27 @@ const Page = () => {
         </section>
         <section className='flex justify-center'>
           <button
-            className='px-4 py-2 text-white font-semibold bg-green-400 rounded-full shadow-md
-            hover:shadow-none hover:bg-green-500 hover:translate-y-1 duration-300'
+            className='px-4 py-2 text-white font-semibold bg-green-500 rounded-full shadow-md
+            hover:shadow-none hover:bg-green-600 hover:translate-y-1 duration-300'
           >
             ログイン
           </button>
         </section>
+        <section className='flex justify-center'>
+          <Link
+            href='/sign_up'
+            className='font-semibold border-b-2 border-black 
+            hover:border-blue-500 hover:text-blue-500 duration-200'
+          >
+            アカウントをお持ちでない方はこちら
+          </Link>
+        </section>
       </form>
+      <ErrorMessageModal
+        isOpen={isOpen}
+        onClose={closeErrorModal}
+        message={errorMessage}
+      />
     </div>
   )
 }

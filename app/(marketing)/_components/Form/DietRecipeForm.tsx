@@ -23,7 +23,6 @@ const DietRecipeForm = ({ setRecipes, setLoading }: DietRecipeFormProps) => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<DietRecipeFormType>({
     defaultValues: {
@@ -56,7 +55,6 @@ const DietRecipeForm = ({ setRecipes, setLoading }: DietRecipeFormProps) => {
     })
 
     setRecipes(response.recipes)
-    reset()
     setLoading(false)
   })
   return (

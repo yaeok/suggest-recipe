@@ -1,5 +1,6 @@
 import { Material } from '@/domain/Material'
 import { MaterialDTO } from '@/infrastracture/data/MaterialDTO'
+import { SystemErrorException } from '@/infrastracture/exception/SystemErrorException'
 import { MaterialRepository } from '@/infrastracture/repository/material_repository'
 import {
   addDoc,
@@ -18,28 +19,32 @@ export class FirestoreMaterialService implements MaterialRepository {
   private path: string = 'materials'
 
   async findAllByRecipeId(args: { recipeId: string }): Promise<MaterialDTO[]> {
-    const { recipeId } = args
+    try {
+      const { recipeId } = args
 
-    const ref = collection(db, this.path)
+      const ref = collection(db, this.path)
 
-    const q = query(ref, where('recipeId', '==', recipeId))
+      const q = query(ref, where('recipeId', '==', recipeId))
 
-    const snapshot = await getDocs(q)
+      const snapshot = await getDocs(q)
 
-    if (snapshot.empty) {
-      return []
-    }
+      if (snapshot.empty) {
+        return []
+      }
 
-    const response = snapshot.docs.map((doc) => {
-      return new MaterialDTO({
-        id: doc.id,
-        recipeId: doc.data().recipeId,
-        name: doc.data().name,
-        quantity: doc.data().quantity,
+      const response = snapshot.docs.map((doc) => {
+        return new MaterialDTO({
+          id: doc.id,
+          recipeId: doc.data().recipeId,
+          name: doc.data().name,
+          quantity: doc.data().quantity,
+        })
       })
-    })
 
-    return response
+      return response
+    } catch (error) {
+      throw new SystemErrorException()
+    }
   }
 
   async create(args: {
