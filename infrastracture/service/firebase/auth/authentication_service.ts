@@ -120,6 +120,7 @@ export class AuthenticationService implements AuthRepository {
       if (!currentUser) {
         throw new UserNotFoundException()
       }
+      await currentUser.reload()
       return currentUser.emailVerified
     } catch (error: any) {
       if (isFirebaseError(error)) {

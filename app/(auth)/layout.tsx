@@ -7,7 +7,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <Header />
+      <Header isAuthPage={true} />
       {children}
     </>
   )

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { IconContext } from 'react-icons'
@@ -43,13 +44,13 @@ const MaterialRecipeForm = ({
 
   const [isOpen, setIsOpen] = useState(false)
 
-  const currentUser = useAuthContext().currentUser
+  const currentUser = useAuthContext()
 
   const openModal = () => setIsOpen(true)
   const closeModal = () => setIsOpen(false)
 
   const onSubmit = handleSubmit(async (data: MaterialRecipeFormType) => {
-    if (currentUser === null) {
+    if (currentUser.currentUser === null || !currentUser.isEmailVerified) {
       openModal()
       return
     }
@@ -155,7 +156,12 @@ const MaterialRecipeForm = ({
           <GenerateButton />
         </section>
       </form>
-      <SignUpModal isOpen={isOpen} onClose={closeModal} />
+      <SignUpModal
+        isOpen={isOpen}
+        onClose={closeModal}
+        isAuth={currentUser.currentUser !== null}
+        isEmailVerification={currentUser.isEmailVerified}
+      />
     </div>
   )
 }
