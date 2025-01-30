@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 
@@ -40,7 +41,7 @@ const Page = () => {
       if (response.result) {
         router.push('/')
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error(error)
     }
   })
@@ -119,11 +120,20 @@ const Page = () => {
         </section>
         <section className='flex justify-center'>
           <button
-            className='px-4 py-2 text-white font-semibold bg-blue-400 rounded-full shadow-md
-            hover:shadow-none hover:bg-blue-500 hover:translate-y-1 duration-300'
+            className='px-4 py-2 text-white font-semibold bg-blue-500 rounded-full shadow-md
+            hover:shadow-none hover:bg-blue-600 hover:translate-y-1 duration-300'
           >
             新規登録
           </button>
+        </section>
+        <section className='flex justify-center'>
+          <Link
+            href='/sign_in'
+            className='font-semibold border-b-2 border-black 
+            hover:border-blue-500 hover:text-blue-500 duration-200'
+          >
+            既にアカウントをお持ちの方はこちら
+          </Link>
         </section>
       </form>
     </div>

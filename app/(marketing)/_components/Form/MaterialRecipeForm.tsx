@@ -27,7 +27,6 @@ const MaterialRecipeForm = ({
   const {
     register,
     handleSubmit,
-    reset,
     control,
     formState: { errors },
   } = useForm<MaterialRecipeFormType>({
@@ -44,13 +43,13 @@ const MaterialRecipeForm = ({
 
   const [isOpen, setIsOpen] = useState(false)
 
-  const currentUser = useAuthContext().currentUser
+  const currentUser = useAuthContext()
 
   const openModal = () => setIsOpen(true)
   const closeModal = () => setIsOpen(false)
 
   const onSubmit = handleSubmit(async (data: MaterialRecipeFormType) => {
-    if (currentUser === null) {
+    if (currentUser.currentUser === null || !currentUser.isEmailVerified) {
       openModal()
       return
     }
@@ -66,7 +65,6 @@ const MaterialRecipeForm = ({
     })
 
     setRecipes(response.recipes)
-    reset()
     setLoading(false)
   })
   return (
@@ -157,7 +155,12 @@ const MaterialRecipeForm = ({
           <GenerateButton />
         </section>
       </form>
-      <SignUpModal isOpen={isOpen} onClose={closeModal} />
+      <SignUpModal
+        isOpen={isOpen}
+        onClose={closeModal}
+        isAuth={currentUser.currentUser !== null}
+        isEmailVerification={currentUser.isEmailVerified}
+      />
     </div>
   )
 }

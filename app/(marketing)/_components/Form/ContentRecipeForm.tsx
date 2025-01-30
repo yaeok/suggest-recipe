@@ -22,7 +22,6 @@ const ContentRecipeForm = ({
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<ContentRecipeFormType>({
     defaultValues: {
@@ -42,7 +41,6 @@ const ContentRecipeForm = ({
     })
 
     setRecipes(response.recipes)
-    reset()
     setLoading(false)
   })
 
