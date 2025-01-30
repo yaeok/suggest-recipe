@@ -1,4 +1,4 @@
-import { Nutrition } from '@/domain/Recipe'
+import { Nutrition } from '@/domain/Nutrition'
 
 export const createPromptByContent = (args: {
   content: string
@@ -19,7 +19,7 @@ export const createPromptByContent = (args: {
         "recipes" : [
           {
             "title": "レシピ1",
-            "ingredients": [
+            "materials": [
               {
                 "name": "材料1",
                 "quantity": "分量1"
@@ -29,7 +29,7 @@ export const createPromptByContent = (args: {
                 "quantity": "分量2"
               }
             ],
-            "procedure": [
+            "process": [
               "工程1",
               "工程2"
             ],
@@ -43,7 +43,7 @@ export const createPromptByContent = (args: {
           },
           {
             "title": "レシピ2",
-            "ingredients": [
+            "materials": [
               {
                 "name": "材料1",
                 "quantity": "分量1"
@@ -53,7 +53,7 @@ export const createPromptByContent = (args: {
                 "quantity": "分量2"
               }
             ],
-            "procedure": [
+            "process": [
               "工程1",
               "工程2"
             ],
@@ -67,7 +67,7 @@ export const createPromptByContent = (args: {
           },
           {
             "title": "レシピ3",
-            "ingredients": [
+            "materials": [
               {
                 "name": "材料1",
                 "quantity": "分量1"
@@ -77,7 +77,7 @@ export const createPromptByContent = (args: {
                 "quantity": "分量2"
               }
             ],
-            "procedure": [
+            "process": [
               "工程1",
               "工程2"
             ],
@@ -96,15 +96,15 @@ export const createPromptByContent = (args: {
   return prompt
 }
 
-export const createPromptByIngredients = (args: {
-  ingredients: string[]
+export const createPromptByMaterial = (args: {
+  materials: string[]
   serves: number
 }): string => {
-  const { ingredients, serves } = args
+  const { materials, serves } = args
 
   const prompt = `
       # 命令
-      ${ingredients.join('、')}を使ったレシピを3つ考えてください。
+      ${materials.join('、')}を使ったレシピを3つ考えてください。
       ${serves}人前の材料と分量をそれぞれ教えてください。
       作り方の工程も教えてください。
 
@@ -115,7 +115,7 @@ export const createPromptByIngredients = (args: {
         "recipes" : [
           {
             "title": "レシピ1",
-            "ingredients": [
+            "materials": [
               {
                 "name": "材料1",
                 "quantity": "分量1"
@@ -125,7 +125,7 @@ export const createPromptByIngredients = (args: {
                 "quantity": "分量2"
               }
             ],
-            "procedure": [
+            "process": [
               "工程1",
               "工程2"
             ],
@@ -139,7 +139,7 @@ export const createPromptByIngredients = (args: {
           },
           {
             "title": "レシピ2",
-            "ingredients": [
+            "materials": [
               {
                 "name": "材料1",
                 "quantity": "分量1"
@@ -149,7 +149,7 @@ export const createPromptByIngredients = (args: {
                 "quantity": "分量2"
               }
             ],
-            "procedure": [
+            "process": [
               "工程1",
               "工程2"
             ],
@@ -163,7 +163,7 @@ export const createPromptByIngredients = (args: {
           },
           {
             "title": "レシピ3",
-            "ingredients": [
+            "materials": [
               {
                 "name": "材料1",
                 "quantity": "分量1"
@@ -173,7 +173,7 @@ export const createPromptByIngredients = (args: {
                 "quantity": "分量2"
               }
             ],
-            "procedure": [
+            "process": [
               "工程1",
               "工程2"
             ],
@@ -218,7 +218,7 @@ export const createPromptByDiet = (args: {
         "recipes" : [
           {
             "title": "レシピ1",
-            "ingredients": [
+            "materials": [
               {
                 "name": "材料1",
                 "quantity": "分量1"
@@ -228,7 +228,7 @@ export const createPromptByDiet = (args: {
                 "quantity": "分量2"
               }
             ],
-            "procedure": [
+            "process": [
               "工程1",
               "工程2"
             ],
@@ -242,7 +242,7 @@ export const createPromptByDiet = (args: {
           },
           {
             "title": "レシピ2",
-            "ingredients": [
+            "materials": [
               {
                 "name": "材料1",
                 "quantity": "分量1"
@@ -252,7 +252,7 @@ export const createPromptByDiet = (args: {
                 "quantity": "分量2"
               }
             ],
-            "procedure": [
+            "process": [
               "工程1",
               "工程2"
             ],
@@ -266,7 +266,7 @@ export const createPromptByDiet = (args: {
           },
           {
             "title": "レシピ3",
-            "ingredients": [
+            "materials": [
               {
                 "name": "材料1",
                 "quantity": "分量1"
@@ -276,7 +276,7 @@ export const createPromptByDiet = (args: {
                 "quantity": "分量2"
               }
             ],
-            "procedure": [
+            "process": [
               "工程1",
               "工程2"
             ],

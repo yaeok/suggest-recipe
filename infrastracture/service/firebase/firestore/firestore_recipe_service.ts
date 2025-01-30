@@ -1,3 +1,6 @@
+import { Recipe } from '@/domain/Recipe'
+import { RecipeDTO } from '@/infrastracture/data/RecipeDTO'
+import { RecipeRepository } from '@/infrastracture/repository/recipe_repository'
 import {
   addDoc,
   collection,
@@ -10,11 +13,11 @@ import {
 
 import { db } from '../config'
 
-export class FirestoreRecipeService {
+export class FirestoreRecipeService implements RecipeRepository {
   /** コレクションパス名 */
   private path: string = 'recipes'
 
-  async findAll(): Promise<DocumentData[]> {
+  async findAll(): Promise<RecipeDTO[]> {
     const ref = collection(db, this.path)
 
     const snapshot = await getDocs(ref)
@@ -23,23 +26,55 @@ export class FirestoreRecipeService {
       return []
     }
 
-    return snapshot.docs.map((doc) => doc.data())
+    const response = snapshot.docs.map((doc) => {
+      return new RecipeDTO({
+        id: doc.id,
+        title: doc.data().title,
+        favorite: doc.data().favorite,
+        serves: doc.data().serves,
+        createdAt: doc.data().createdAt,
+      })
+    })
+
+    return response
   }
 
-  async create(args: { document: DocumentData }): Promise<string> {
-    const { document } = args
+  async create(args: { recipe: Recipe }): Promise<RecipeDTO> {
+    const { recipe } = args
+
+    const document: DocumentData = {
+      title: recipe.title,
+      favorite: recipe.favorite,
+      serves: recipe.serves,
+      createdAt: new Date(),
+    }
+
     const ref = collection(db, this.path)
 
     const doc = await addDoc(ref, document)
 
     await updateDoc(doc, { id: doc.id })
 
-    return doc.id
+    return new RecipeDTO({
+      id: doc.id,
+      title: recipe.title,
+      favorite: recipe.favorite,
+      serves: recipe.serves,
+      createdAt: new Date(),
+    })
   }
 
-  async update(args: { document: DocumentData }): Promise<void> {
-    const { document } = args
-    const ref = doc(db, this.path, document.id)
+  async update(args: { recipe: Recipe }): Promise<void> {
+    const { recipe } = args
+
+    const document: DocumentData = {
+      title: recipe.title,
+      favorite: recipe.favorite,
+      serves: recipe.serves,
+      updatedAt: new Date(),
+    }
+
+    const ref = doc(db, this.path, recipe.id)
 
     await updateDoc(ref, document)
   }
@@ -51,10 +86,7 @@ export class FirestoreRecipeService {
     await deleteDoc(ref)
   }
 
-  async updateForFavorite(args: {
-    id: string
-    favorite: boolean
-  }): Promise<void> {
+  async updateFavorite(args: { id: string; favorite: boolean }): Promise<void> {
     const { id, favorite } = args
     const ref = doc(db, this.path, id)
 

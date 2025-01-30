@@ -7,13 +7,13 @@ import { Recipe } from '@/domain/Recipe'
 
 import ContentRecipeForm from './_components/Form/ContentRecipeForm'
 import DietRecipeForm from './_components/Form/DietRecipeForm'
-import IngredientRecipeForm from './_components/Form/IngredientRecipeForm'
+import MaterialRecipeForm from './_components/Form/MaterialRecipeForm'
 import RecipeList from './_components/List/RecipeList'
 import SelectTab from './_components/SelectTab'
 
 const Page = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([])
-  const [selectTab, setSelectTab] = useState<TabType>(TabType.INGREDIENTS)
+  const [selectTab, setSelectTab] = useState<TabType>(TabType.MATERIAL)
   const [loading, setLoading] = useState<boolean>(false)
   if (loading) {
     return (
@@ -25,7 +25,7 @@ const Page = () => {
     )
   } else {
     return (
-      <div className='w-full max-w-screen-md mx-auto py-12 space-y-8'>
+      <div className='w-full max-w-screen-md mx-auto px-8 py-12 space-y-8'>
         <SelectTab selectTab={selectTab} setSelectTab={setSelectTab} />
         {(() => {
           if (selectTab === TabType.CONTENTS) {
@@ -35,9 +35,9 @@ const Page = () => {
                 setLoading={setLoading}
               />
             )
-          } else if (selectTab === TabType.INGREDIENTS) {
+          } else if (selectTab === TabType.MATERIAL) {
             return (
-              <IngredientRecipeForm
+              <MaterialRecipeForm
                 setRecipes={setRecipes}
                 setLoading={setLoading}
               />
