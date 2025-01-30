@@ -1,6 +1,9 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+
+import { SignUpUseCase } from '@/usecase/SignUpUseCase/SignUpUseCase'
 
 type SignUpFormType = {
   email: string
@@ -22,10 +25,24 @@ const Page = () => {
     },
   })
 
+  const router = useRouter()
+
   const password = watch('password')
 
-  const onSubmit = handleSubmit((data: SignUpFormType) => {
-    console.log(data)
+  const onSubmit = handleSubmit(async (data: SignUpFormType) => {
+    try {
+      const { email, password } = data
+
+      const usecase = new SignUpUseCase()
+
+      const response = await usecase.execute({ email, password })
+
+      if (response.result) {
+        router.push('/')
+      }
+    } catch (error: any) {
+      console.error(error)
+    }
   })
   return (
     <div className='max-w-screen-sm mx-auto py-16 px-8'>

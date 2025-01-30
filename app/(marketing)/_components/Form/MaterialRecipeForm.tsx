@@ -5,6 +5,7 @@ import { RiCloseCircleLine } from 'react-icons/ri'
 
 import SignUpModal from '@/components/Modal/SignUpModal'
 import { Recipe } from '@/domain/Recipe'
+import { useAuthContext } from '@/providers/CurrentUserProvider'
 import { GenerateRecipeByMaterialModeUseCase } from '@/usecase/GenerateRecipeByMaterialModeUseCase/GenerateRecipeByMaterialModeUseCase'
 
 import GenerateButton from './Button/GenerateButton'
@@ -43,11 +44,16 @@ const MaterialRecipeForm = ({
 
   const [isOpen, setIsOpen] = useState(false)
 
+  const currentUser = useAuthContext().currentUser
+
   const openModal = () => setIsOpen(true)
   const closeModal = () => setIsOpen(false)
 
   const onSubmit = handleSubmit(async (data: MaterialRecipeFormType) => {
-    openModal()
+    if (currentUser === null) {
+      openModal()
+      return
+    }
     const { materials, serves } = data
     setLoading(true)
     const usecase = new GenerateRecipeByMaterialModeUseCase()

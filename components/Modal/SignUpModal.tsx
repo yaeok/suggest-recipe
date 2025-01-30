@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { IconContext } from 'react-icons'
 import { RiCloseCircleFill } from 'react-icons/ri'
 
@@ -23,14 +24,17 @@ const SignUpModal = ({ isOpen, onClose }: SignUpModalProps) => {
                 </IconContext.Provider>
               </button>
             </div>
-            <div className='flex flex-col gap-4'>
-              <p>レシピ生成を実行するには、アカウントを作成してください</p>
-              <button
-                className='bg-blue-500 text-white text-lg font-semibold rounded-lg p-2'
-                onClick={onClose}
+            <div className='p-4 flex flex-col items-center gap-8'>
+              <p className='text-lg'>
+                レシピ生成を実行するには、アカウントを作成してください
+              </p>
+              <Link
+                href='/sign_up'
+                className='px-4 py-2 bg-blue-500 text-white font-semibold rounded-full
+                  hover:shadow-none hover:bg-blue-600 hover:translate-y-1 duration-300'
               >
                 アカウント新規登録
-              </button>
+              </Link>
             </div>
           </div>
         </div>
