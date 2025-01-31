@@ -1,4 +1,3 @@
-import Header from '@/components/Header'
 import { CurrentUserProvider } from '@/providers/CurrentUserProvider'
 
 export default function RootLayout({
@@ -6,10 +5,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  return (
-    <CurrentUserProvider>
-      <Header />
-      {children}
-    </CurrentUserProvider>
-  )
+  return <CurrentUserProvider>{children}</CurrentUserProvider>
 }
