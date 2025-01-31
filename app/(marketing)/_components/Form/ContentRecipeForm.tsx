@@ -4,6 +4,9 @@ import { Recipe } from '@/domain/Recipe'
 import { GenerateRecipeByContentModeUseCase } from '@/usecase/GenerateRecipeByContentModeUseCase/GenerateRecipeByContentModeUseCase'
 
 import GenerateButton from './Button/GenerateButton'
+import SignUpModal from '@/components/Modal/SignUpModal'
+import { useAuthContext } from '@/providers/CurrentUserProvider'
+import { useState } from 'react'
 
 type ContentRecipeFormProps = {
   setRecipes: (recipes: Recipe[]) => void
@@ -30,7 +33,19 @@ const ContentRecipeForm = ({
     },
   })
 
+  const [isOpen, setIsOpen] = useState(false)
+
+  const currentUser = useAuthContext()
+
+  const openModal = () => setIsOpen(true)
+  const closeModal = () => setIsOpen(false)
+
   const onSubmit = handleSubmit(async (data: ContentRecipeFormType) => {
+    if (currentUser.currentUser === null || !currentUser.isEmailVerified) {
+      openModal()
+      return
+    }
+
     const { content, serves } = data
     setLoading(true)
     const usecase = new GenerateRecipeByContentModeUseCase()
@@ -102,6 +117,12 @@ const ContentRecipeForm = ({
       <section>
         <GenerateButton />
       </section>
+      <SignUpModal
+        isOpen={isOpen}
+        onClose={closeModal}
+        isAuth={currentUser.currentUser !== null}
+        isEmailVerification={currentUser.isEmailVerified}
+      />
     </form>
   )
 }
