@@ -42,10 +42,10 @@ const Page = () => {
                 setLoading={setLoading}
               />
             )
-          } else if (selectTab === TabType.DIET) {
-            return (
-              <DietRecipeForm setRecipes={setRecipes} setLoading={setLoading} />
-            )
+            // } else if (selectTab === TabType.DIET) {
+            //   return (
+            //     <DietRecipeForm setRecipes={setRecipes} setLoading={setLoading} />
+            //   )
           }
         })()}
         {(() => {
