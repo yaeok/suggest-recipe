@@ -3,7 +3,6 @@
 import Link from 'next/link'
 
 import { useAuthContext } from '@/providers/CurrentUserProvider'
-import { SignOutUseCase } from '@/usecase/SignOutUseCase/SignOutUseCase'
 
 import PopoverButton from './PopOver'
 
