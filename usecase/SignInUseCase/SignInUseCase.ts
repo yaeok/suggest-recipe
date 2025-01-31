@@ -1,5 +1,7 @@
+import { SystemErrorException } from '@/infrastracture/exception/SystemErrorException'
 import { AuthRepository } from '@/infrastracture/repository/auth_repository'
 import { AuthenticationService } from '@/infrastracture/service/firebase/auth/authentication_service'
+import { FirebaseAuthException } from '@/infrastracture/service/firebase/exception/FirebaseAuthException'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'
 
@@ -29,7 +31,11 @@ export class SignInUseCase
 
       return { result: true }
     } catch (error: any) {
-      throw new Error(error)
+      if (error instanceof FirebaseAuthException) {
+        throw new FirebaseAuthException(error.message, error.code)
+      } else {
+        throw new SystemErrorException()
+      }
     }
   }
 }

@@ -2,8 +2,12 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
+import ErrorMessageModal from '@/components/Modal/ErrorMessageModal'
+import { SystemErrorException } from '@/infrastracture/exception/SystemErrorException'
+import { FirebaseAuthException } from '@/infrastracture/service/firebase/exception/FirebaseAuthException'
 import { SignUpUseCase } from '@/usecase/SignUpUseCase/SignUpUseCase'
 
 type SignUpFormType = {
@@ -28,6 +32,12 @@ const Page = () => {
 
   const router = useRouter()
 
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [errorMessage, setErrorMessage] = useState<string>('')
+
+  const openErrorModal = () => setIsOpen(true)
+  const closeErrorModal = () => setIsOpen(false)
+
   const password = watch('password')
 
   const onSubmit = handleSubmit(async (data: SignUpFormType) => {
@@ -42,7 +52,13 @@ const Page = () => {
         router.push('/email_verify')
       }
     } catch (error) {
-      console.error(error)
+      if (error instanceof FirebaseAuthException) {
+        setErrorMessage(error.message)
+        openErrorModal()
+      } else if (error instanceof SystemErrorException) {
+        setErrorMessage(error.message)
+        openErrorModal()
+      }
     }
   })
   return (
@@ -136,6 +152,11 @@ const Page = () => {
           </Link>
         </section>
       </form>
+      <ErrorMessageModal
+        isOpen={isOpen}
+        onClose={closeErrorModal}
+        message={errorMessage}
+      />
     </div>
   )
 }

@@ -37,6 +37,8 @@ export class AuthenticationService implements AuthRepository {
 
       const user = await createUserWithEmailAndPassword(auth, email, password)
 
+      this.sendEmailVerification()
+
       return user.user.uid
     } catch (error: any) {
       if (isFirebaseError(error)) {

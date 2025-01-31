@@ -17,7 +17,7 @@ const Page = () => {
   const [loading, setLoading] = useState<boolean>(false)
   if (loading) {
     return (
-      <div className='absolute w-full min-h-screen flex justify-center items-center animate-pulse z-20'>
+      <div className='absolute w-full p-24 flex justify-center items-center animate-pulse'>
         <div className='w-full flex flex-col items-center gap-4'>
           <h2 className='text-3xl font-extrabold'>生成中...</h2>
         </div>
