@@ -5,6 +5,9 @@ import { Recipe } from '@/domain/Recipe'
 import { GenerateRecipeByDietModeUseCase } from '@/usecase/GenerateRecipeByDietModeUseCase/GenerateRecipeByDietModeUseCase'
 
 import GenerateButton from './Button/GenerateButton'
+import { useState } from 'react'
+import { useAuthContext } from '@/providers/CurrentUserProvider'
+import SignUpModal from '@/components/Modal/SignUpModal'
 
 type DietRecipeFormProps = {
   setRecipes: (recipes: Recipe[]) => void
@@ -34,7 +37,19 @@ const DietRecipeForm = ({ setRecipes, setLoading }: DietRecipeFormProps) => {
     },
   })
 
+  const [isOpen, setIsOpen] = useState(false)
+
+  const currentUser = useAuthContext()
+
+  const openModal = () => setIsOpen(true)
+  const closeModal = () => setIsOpen(false)
+
   const onSubmit = handleSubmit(async (data: DietRecipeFormType) => {
+    if (currentUser.currentUser === null || !currentUser.isEmailVerified) {
+      openModal()
+      return
+    }
+
     const { calorie, protein, fat, carbohydrate, serves } = data
     setLoading(true)
 
@@ -153,6 +168,12 @@ const DietRecipeForm = ({ setRecipes, setLoading }: DietRecipeFormProps) => {
       <section>
         <GenerateButton />
       </section>
+      <SignUpModal
+        isOpen={isOpen}
+        onClose={closeModal}
+        isAuth={currentUser.currentUser !== null}
+        isEmailVerification={currentUser.isEmailVerified}
+      />
     </form>
   )
 }

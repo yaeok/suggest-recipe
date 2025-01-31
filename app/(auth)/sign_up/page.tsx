@@ -39,7 +39,7 @@ const Page = () => {
       const response = await usecase.execute({ email, password })
 
       if (response.result) {
-        router.push('/')
+        router.push('/email_verify')
       }
     } catch (error) {
       console.error(error)
