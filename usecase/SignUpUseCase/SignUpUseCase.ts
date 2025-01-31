@@ -1,7 +1,9 @@
 import { User } from '@/domain/User'
+import { SystemErrorException } from '@/infrastracture/exception/SystemErrorException'
 import { AuthRepository } from '@/infrastracture/repository/auth_repository'
 import { UserRepository } from '@/infrastracture/repository/user_repository'
 import { AuthenticationService } from '@/infrastracture/service/firebase/auth/authentication_service'
+import { FirebaseAuthException } from '@/infrastracture/service/firebase/exception/FirebaseAuthException'
 import { FirestoreUserService } from '@/infrastracture/service/firebase/firestore/firestore_user_service'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'
@@ -42,7 +44,11 @@ export class SignUpUseCase
 
       return { result: true }
     } catch (error: any) {
-      throw new Error(error)
+      if (error instanceof FirebaseAuthException) {
+        throw new FirebaseAuthException(error.message, error.code)
+      } else {
+        throw new SystemErrorException()
+      }
     }
   }
 }
