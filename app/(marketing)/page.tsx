@@ -6,7 +6,7 @@ import { TabType } from '@/constants/Tab'
 import { Recipe } from '@/domain/Recipe'
 
 import ContentRecipeForm from './_components/Form/ContentRecipeForm'
-import DietRecipeForm from './_components/Form/DietRecipeForm'
+// import DietRecipeForm from './_components/Form/DietRecipeForm'
 import MaterialRecipeForm from './_components/Form/MaterialRecipeForm'
 import RecipeList from './_components/List/RecipeList'
 import SelectTab from './_components/SelectTab'
