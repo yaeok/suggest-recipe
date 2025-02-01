@@ -35,7 +35,7 @@ const AuthCheckModal = ({ recipe }: AuthCheckModalProps) => {
       }
 
       setIsSaving(true)
-    } catch (error: any) {
+    } catch (error) {
       console.error(error)
       setIsSaving(false)
     }
