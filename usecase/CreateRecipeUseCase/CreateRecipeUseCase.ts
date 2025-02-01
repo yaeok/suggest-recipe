@@ -16,6 +16,7 @@ import { FirestoreProcessService } from '@/infrastracture/service/firebase/fires
 import { FirestoreRecipeService } from '@/infrastracture/service/firebase/firestore/firestore_recipe_service'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'
+import { SystemErrorException } from '@/infrastracture/exception/SystemErrorException'
 
 interface CreateRecipeUseCaseInput extends UseCaseInput {
   recipe: Recipe
@@ -29,6 +30,8 @@ export class CreateRecipeUseCase
   implements
     UseCase<CreateRecipeUseCaseInput, Promise<CreateRecipeUseCaseOutput>>
 {
+  private className = 'CreateRecipeUseCase'
+
   private recipeRepository: RecipeRepository
   private materialRepository: MaterialRepository
   private processRepository: ProcessRepository
@@ -113,7 +116,8 @@ export class CreateRecipeUseCase
 
       return { recipe: response }
     } catch (error: any) {
-      throw new Error(error)
+      console.error(`${this.className} error:`, error)
+      throw new SystemErrorException('レシピの登録に失敗しました')
     }
   }
 }

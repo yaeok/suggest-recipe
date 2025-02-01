@@ -1,6 +1,6 @@
 import { Recipe } from '@/domain/Recipe'
 
-import SaveButton from './Button/SaveButton'
+import AuthCheckModal from './Modal/AuthCheckModal'
 
 type RecipeListItemProps = {
   recipe: Recipe
@@ -66,7 +66,7 @@ const RecipeListItem = ({ recipe }: RecipeListItemProps, index: number) => {
         </ol>
 
         <div className='w-full flex justify-center mt-4'>
-          <SaveButton recipe={recipe} />
+          <AuthCheckModal recipe={recipe} />
         </div>
       </div>
     </div>

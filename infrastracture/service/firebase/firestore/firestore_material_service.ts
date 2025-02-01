@@ -42,7 +42,7 @@ export class FirestoreMaterialService implements MaterialRepository {
       })
 
       return response
-    } catch (error) {
+    } catch (error: any) {
       throw new SystemErrorException()
     }
   }
