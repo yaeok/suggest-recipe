@@ -115,7 +115,7 @@ export class CreateRecipeUseCase
       })
 
       return { recipe: response }
-    } catch (error) {
+    } catch (error: any) {
       console.error(`${this.className} error:`, error)
       throw new SystemErrorException('レシピの登録に失敗しました')
     }

@@ -48,7 +48,7 @@ const Page = () => {
       if (response.result) {
         router.push('/')
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof FirebaseAuthException) {
         setErrorMessage(error.message)
         openErrorModal()

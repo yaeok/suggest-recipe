@@ -29,7 +29,7 @@ export class ResendEmailVerificationUseCase
     try {
       const response = await this.authRepository.resendEmailVerification()
       return { result: response }
-    } catch (error) {
+    } catch (error: any) {
       console.error(`${this.className} error:`, error)
       if (error instanceof FirebaseAuthException) {
         throw new FirebaseAuthException(error.message, error.code)

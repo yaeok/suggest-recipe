@@ -30,7 +30,7 @@ export class SignInUseCase
       await this.repository.signIn({ email, password })
 
       return { result: true }
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof FirebaseAuthException) {
         throw new FirebaseAuthException(error.message, error.code)
       } else {

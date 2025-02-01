@@ -69,7 +69,7 @@ export class GenerateRecipeByContentModeUseCase
       })
 
       return { recipes: response }
-    } catch (error) {
+    } catch (error: any) {
       console.error(`${this.className} error:`, error)
       throw new SystemErrorException('レシピの生成に失敗しました')
     }

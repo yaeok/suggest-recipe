@@ -21,7 +21,7 @@ export class AuthenticationService implements AuthRepository {
       const { email, password } = args
 
       await signInWithEmailAndPassword(auth, email, password)
-    } catch (error) {
+    } catch (error: any) {
       if (isFirebaseError(error)) {
         const result = this.handleFirebaseAuthError(error)
         throw new FirebaseAuthException(result.message, result.code)
@@ -40,7 +40,7 @@ export class AuthenticationService implements AuthRepository {
       this.sendEmailVerification()
 
       return user.user.uid
-    } catch (error) {
+    } catch (error: any) {
       if (isFirebaseError(error)) {
         const result = this.handleFirebaseAuthError(error)
         throw new FirebaseAuthException(result.message, result.code)
@@ -53,7 +53,7 @@ export class AuthenticationService implements AuthRepository {
   async signOut(): Promise<void> {
     try {
       await auth.signOut()
-    } catch (error) {
+    } catch (error: any) {
       if (isFirebaseError(error)) {
         const result = this.handleFirebaseAuthError(error)
         throw new FirebaseAuthException(result.message, result.code)
@@ -71,7 +71,7 @@ export class AuthenticationService implements AuthRepository {
       }
       await sendEmailVerification(currentUser)
       return true
-    } catch (error) {
+    } catch (error: any) {
       if (isFirebaseError(error)) {
         const result = this.handleFirebaseAuthError(error)
         throw new FirebaseAuthException(result.message, result.code)
@@ -87,7 +87,7 @@ export class AuthenticationService implements AuthRepository {
 
       await sendPasswordResetEmail(auth, email)
       return true
-    } catch (error) {
+    } catch (error: any) {
       if (isFirebaseError(error)) {
         const result = this.handleFirebaseAuthError(error)
         throw new FirebaseAuthException(result.message, result.code)
@@ -105,7 +105,7 @@ export class AuthenticationService implements AuthRepository {
       }
       await sendEmailVerification(currentUser)
       return true
-    } catch (error) {
+    } catch (error: any) {
       if (isFirebaseError(error)) {
         const result = this.handleFirebaseAuthError(error)
         throw new FirebaseAuthException(result.message, result.code)
@@ -124,7 +124,7 @@ export class AuthenticationService implements AuthRepository {
       }
       await currentUser.reload()
       return currentUser.emailVerified
-    } catch (error) {
+    } catch (error: any) {
       if (isFirebaseError(error)) {
         const result = this.handleFirebaseAuthError(error)
         throw new FirebaseAuthException(result.message, result.code)

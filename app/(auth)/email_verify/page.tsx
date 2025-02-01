@@ -18,7 +18,7 @@ const Page = () => {
       if (response.result) {
         router.push('/')
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error)
     }
   }
@@ -30,7 +30,7 @@ const Page = () => {
       if (response.result) {
         alert('確認メールを再送信しました')
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error)
     }
   }
