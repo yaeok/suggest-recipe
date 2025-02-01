@@ -2,8 +2,10 @@ import { AuthRepository } from '@/infrastracture/repository/auth_repository'
 import { AuthenticationService } from '@/infrastracture/service/firebase/auth/authentication_service'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'
+import { SystemErrorException } from '@/infrastracture/exception/SystemErrorException'
+import { FirebaseAuthException } from '@/infrastracture/service/firebase/exception/FirebaseAuthException'
 
-interface ResendEmailVerificationUseCaseInput extends UseCaseInput {}
+type ResendEmailVerificationUseCaseInput = UseCaseInput
 
 interface ResendEmailVerificationUseCaseOutput extends UseCaseOutput {
   result: boolean
@@ -16,6 +18,7 @@ export class ResendEmailVerificationUseCase
       Promise<ResendEmailVerificationUseCaseOutput>
     >
 {
+  private className = 'ResendEmailVerificationUseCase'
   private authRepository: AuthRepository
 
   constructor() {
@@ -26,8 +29,13 @@ export class ResendEmailVerificationUseCase
     try {
       const response = await this.authRepository.resendEmailVerification()
       return { result: response }
-    } catch (error: any) {
-      throw new Error(error)
+    } catch (error) {
+      console.error(`${this.className} error:`, error)
+      if (error instanceof FirebaseAuthException) {
+        throw new FirebaseAuthException(error.message, error.code)
+      } else {
+        throw new SystemErrorException()
+      }
     }
   }
 }

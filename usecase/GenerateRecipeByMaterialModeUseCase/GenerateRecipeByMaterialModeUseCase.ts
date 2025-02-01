@@ -7,6 +7,7 @@ import { GenerateRepository } from '@/infrastracture/repository/generate_reposit
 import { GeminiRecipeService } from '@/infrastracture/service/firebase/gemini/gemini_recipe_service'
 
 import { UseCase, UseCaseInput, UseCaseOutput } from '../UseCase'
+import { SystemErrorException } from '@/infrastracture/exception/SystemErrorException'
 
 interface GenerateRecipeByMaterialModeUseCaseInput extends UseCaseInput {
   materials: string[]
@@ -24,6 +25,7 @@ export class GenerateRecipeByMaterialModeUseCase
       Promise<GenerateRecipeByMaterialModeUseCaseOutput>
     >
 {
+  private className = 'GenerateRecipeByMaterialModeUseCase'
   private repository: GenerateRepository
 
   constructor() {
@@ -69,8 +71,9 @@ export class GenerateRecipeByMaterialModeUseCase
       })
 
       return { recipes: response }
-    } catch (error: any) {
-      throw new Error(error)
+    } catch (error) {
+      console.error(`${this.className} error:`, error)
+      throw new SystemErrorException('レシピの生成に失敗しました')
     }
   }
 }
