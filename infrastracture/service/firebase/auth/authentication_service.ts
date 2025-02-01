@@ -138,7 +138,7 @@ export class AuthenticationService implements AuthRepository {
    * Firebaseのエラーハンドリングを行う
    * @param error エラーオブジェクト
    */
-  private handleFirebaseAuthError(error): {
+  private handleFirebaseAuthError(error: any): {
     message: string
     code: string
   } {
