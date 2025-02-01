@@ -1,6 +1,5 @@
 import { Recipe } from '@/domain/Recipe'
 
-import SaveButton from './Button/SaveButton'
 import AuthCheckModal from './Modal/AuthCheckModal'
 
 type RecipeListItemProps = {
