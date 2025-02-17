@@ -40,7 +40,7 @@ export class FirestoreUserService implements UserRepository {
       })[0]
 
       return user
-    } catch (error) {
+    } catch (error: any) {
       throw new Error('Failed to find user')
     }
   }
@@ -64,7 +64,7 @@ export class FirestoreUserService implements UserRepository {
         email: user.email,
         createdAt: user.createdAt,
       })
-    } catch (error) {
+    } catch (error: any) {
       throw new Error('Failed to create user')
     }
   }
@@ -82,7 +82,7 @@ export class FirestoreUserService implements UserRepository {
       }
 
       await updateDoc(ref, doument)
-    } catch (error) {
+    } catch (error: any) {
       throw new Error('Failed to update user')
     }
   }
@@ -94,7 +94,7 @@ export class FirestoreUserService implements UserRepository {
       const ref = doc(db, this.path, id)
 
       await deleteDoc(ref)
-    } catch (error) {
+    } catch (error: any) {
       throw new Error('Failed to delete user')
     }
   }

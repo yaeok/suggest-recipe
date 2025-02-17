@@ -9,9 +9,11 @@ type RecipeListProps = {
 const RecipeList = ({ recipes }: RecipeListProps) => {
   return recipes.map((recipe: Recipe, index: number) => {
     return (
-      <div key={recipe.id}>
-        <RecipeListItem recipe={recipe} index={index} />
-      </div>
+      index < 3 && (
+        <div key={recipe.id}>
+          <RecipeListItem recipe={recipe} index={index} />
+        </div>
+      )
     )
   })
 }
